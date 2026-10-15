@@ -1,0 +1,647 @@
+%=============================================================================================%
+%========================================= PREAMBULE =========================================%
+%=============================================================================================%
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{csquotes}
+\usepackage{titlesec}
+\usepackage{gensymb}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage{minted}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit}
+
+\usepackage[
+    a4paper, 
+    top=3cm, 
+    bottom=3cm, 
+    left=2.5cm, 
+    right=2.5cm, 
+    headheight=15pt, 
+    headsep=1cm, 
+    footskip=1.5cm
+]{geometry}
+
+%----------------------- BIBLIO ----------------------%
+\usepackage[
+    backend=biber,
+    style=numeric-comp,   % style (auteur-année)
+    sorting=none,         % tri : Name, Year, Title
+    url=true,             % affichage des URL
+    doi=false,            % affichage DOI 
+    isbn=false,           % affichage ISBN
+]{biblatex}
+
+\addbibresource{references.bib}
+
+\pagestyle{fancy}
+\fancyhf{}
+
+%----------------------- FOLDER ----------------------%
+\newcommand{\logosfolder}{logos/}
+\newcommand{\imagesfolder}{images/}
+
+%----------------- HEADER DEFINITION -----------------%
+% \fancyhead[L]{NOM Prénom Auteur}
+\fancyhead[C]{}
+% \fancyhead[R]{Année universitaire 202x–202x}
+
+%----------------- FOOTER DEFINITION -----------------%
+% \fancyfoot[L]{... ... ...}
+\fancyfoot[C]{}
+\fancyfoot[R]{\thepage\ of \pageref{LastPage}}
+
+%---------------- LIGNE HEADER/FOOTER ----------------%
+\renewcommand{\headrulewidth}{0.25pt} 
+\renewcommand{\footrulewidth}{0.25pt} 
+
+%------------------- SUPMECA COLOR -------------------%
+\definecolor{supmeca_blue}{RGB}{50, 50, 70}
+\definecolor{supmeca_white}{RGB}{247, 247, 248}
+\definecolor{supmeca_orange}{RGB}{242, 77, 33}
+
+%----------------------- SECTION ---------------------%
+\titlespacing{\subsection}
+{1cm}                        % Retrait à gauche
+{3.5ex plus 1ex minus .2ex}  % Espace avant
+{2.3ex plus .2ex}            % Espace après
+
+\titlespacing{\subsubsection}
+{2cm}                        % Retrait à gauche
+{3.25ex plus 1ex minus .2ex} % Espace avant
+{1.5ex plus .2ex}            % Espace après          
+
+\renewcommand{\thesection}{\Roman{section}.}
+\renewcommand{\thesubsection}{\arabic{subsection}.}
+\renewcommand{\thesubsubsection}{\thesubsection\arabic{subsubsection}}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries} % Style du titre (Taille, Gras)
+  {\thesection}                % Le numéro (qui contient vos points/slashs)
+  {1em}                        % Taille de la boite
+  {}                           % Code avant le titre
+
+\setlength{\parindent}{0pt}    % Taille de l'alinéa
+\setlength{\parskip}{0.5em}    % Espace après le paragraphe
+
+\captionsetup{justification=centering}
+
+\setlist{after=\vspace{0.25em}}
+
+\newcolumntype{C}{>{\Centering\arraybackslash}X}
+
+%=============================================================================================%
+%========================================= DOCUMENT ==========================================%
+%=============================================================================================%
+\begin{document}
+ 
+%-------------------------------------------------------------------------%
+%------------------------------- TITLE PAGE ------------------------------%
+%-------------------------------------------------------------------------%
+\begin{titlepage}
+ 
+    \thispagestyle{empty}
+    
+    % \noindent
+    % \includegraphics[width=0.35\textwidth]{\logosfolder logo_isae-supmeca_ismep.png}\\[0.25cm]
+ 
+    \begin{center}
+    
+        {\Huge \textbf{Structural Health Monitoring}} \\[0.5cm] 
+        Machine Learning framework for SHM applications \\[0.4cm]
+        
+        \noindent\rule{\textwidth}{0.4pt}\\[0.4cm]
+ 
+        % {\large  FISA - ISAE-Supmeca}\\[0.25cm]
+        
+        %----- Confidentiality constraints -----%
+        % ------------------------------------- %
+        
+        %---------- Host entity ----------%
+        % \begin{figure}[ht]
+        %     \centering
+        %     %----- Entity logo -----%
+        %     \includegraphics[width=0.3\textwidth]{\logosfolder logo_euler.png}
+        % \end{figure}
+        % {\normalsize \textbf{Host entity(ies)}}
+        
+        % \vspace{0.75cm}
+        
+        % \textbf{Author:} SURNAME Firstname\\[0.2cm]
+        % \textbf{Supervisor:} Name(s) Firstname(s)\\[0.2cm]
+        % \textbf{Date:} January 1, 20xx \\[1cm]
+ 
+        % Academic year 20xx-20xx
+    \end{center}
+    
+\end{titlepage}
+ 
+%-------------------------------------------------------------------------%
+%------------------------------- CONTENTS --------------------------------%
+%-------------------------------------------------------------------------%
+\newpage
+ 
+\setcounter{tocdepth}{1}                                    % section depth
+\setlength{\cftbeforesecskip}{10pt}                         % space between lines
+\setlength{\cftsecnumwidth}{3em}
+ 
+\renewcommand{\contentsname}{Contents}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cfttoctitlefont}{\Huge\bfseries\centering}   % style of the "Contents" title
+\renewcommand{\cftsecfont}{\large\bfseries}                 % style of section titles
+\renewcommand{\cftsubsecfont}{\normalsize}                  % style of subsections
+\renewcommand{\cftsecpagefont}{}                            % page number in bold
+\renewcommand{\cftdotsep}{0.5}                              % spacing between leader dots
+ 
+\tableofcontents
+ 
+%-------------------------------------------------------------------------%
+%----------------------------------- BODY --------------------------------%
+%-------------------------------------------------------------------------%
+\newpage
+\section{State of the Art}
+ 
+%-----------------------------------%
+\subsection{Introduction}
+ 
+Structural Health Monitoring (SHM) has been a major field of research for several years now and remains an active field \cite{s25196136, SPENCER2025100203, Khatir2025}, contributing to the extension of the service life of structures, improving the use of resources and reducing their carbon footprint \cite{DHIRAJ2021199}. This study therefore aims to take an active part in the development of these technologies. 
+ 
+Optimizing maintenance and guaranteeing the safety of infrastructures have become major scientific and industrial challenges. Founded on non-destructive evaluation, \textit{SHM} methods rely on different paradigms such as the integration, within the structures themselves, of sensor networks, vision-based monitoring or the use of contactless sensors \cite{SPENCER2025100203, Khatir2025}. This kind of instrumentation makes it possible to ensure continuous and integrated monitoring of the structure's state of health without altering its mechanical behavior. As a result, the processes of early detection, localization and assessment of damage can be carried out autonomously and in real time.
+ 
+Structural health monitoring is a major topic for our modern societies and must be part of current technological development. Today, the significant progress of machine learning \textit{(Machine Learning / Deep Learning)} is increasing the interest and the popularity of data-driven \textit{SHM} methods, generally machine learning models performing classification or regression tasks \cite{s25196136, infrastructures11070228, Rizvi_2023}. For example, \textit{F. Mustapha et al.} \cite{MUSTAPHA20071885} propose the implementation of a multilayer perceptron for defect localization, whereas \textit{Sawant et al}. \cite{SAWANT2023106931} use an autoencoder for detection, both from guided-wave signal measurements. These approaches have often proven to be more effective than traditional signal-processing approaches based on hand-crafted features, such as the model proposed by \textit{Yuqing Gao et al}. \cite{GAO2023106889}. 
+ 
+However, machine learning models face certain limitations that hinder their industrial deployment. The main issue is the mismatch between the massive need for labeled data and the rarity of the events to detects, that is the damaging of structures. This difficulty is common to the entire \textit{SHM} field \cite{Rizvi_2023, SAWANT2023106931, s25196136}, which is why the scientific literature strives to explore new methods to address these challenges. Unsupervised approaches are the best suited to cope with the lack of data because their implementation does not require labeled datas. Moreover, recent advances in the development of hybrid methods (physics-informed machine learning \textit{(PIML - PINN)}), the use of \textit{Transfer Learning}, or the creation of synthetic data \textit{(GAN / VAE)} are among the methods being considered by current research \cite{Rizvi_2023, infrastructures11070228}.   
+ 
+%-----------------------------------%
+\subsection{Analysis Methods}
+ 
+The design and implementation of these monitoring strategies are generally organized around a decision-making analysis process formalized by \textit{Rytter's hierarchy} \cite{s25196136}. This paradigm, described in the doctoral thesis of \textit{Anders Rytter} published in 1993 \cite{rytter1993}, is widely adopted by the scientific literature and constitutes a reference framework for the entire \textit{SHM} field. Anders Rytter's thesis is based on the central idea that local damage modifies the stiffness of a structure and, consequently, its \textit{dynamic signature}. The author therefore proposes a formalism that decomposes damage identification into four diagnostic levels: 
+ 
+%-------------%
+\begin{enumerate}
+ 
+    \item \textbf{Detection}: qualitatively indicates the presence of damage on the structure.
+    \item \textbf{Localization}: provides the position of the defect on the structure.
+    \item \textbf{Assessment}: gives an estimate of the severity of the defect.
+    \item \textbf{Prognosis}: informs on the safety and the remaining service life.
+    
+\end{enumerate}
+ 
+The techniques implemented to carry out each of these steps rely mainly on the analysis of signals of various origins: guided waves, vibrations or strains \cite{SPENCER2025100203, Khatir2025}. Each type of signal is associated with a specific sensor technology. Strain analysis relies on \textit{strain gauges} or \textit{fiber optic sensors (FBG)}, as in \textit{Alvarez-Montoya et al.} \cite{ALVAREZMONTOYA2020106526}. Guided-wave approaches most often rely on \textit{piezoelectric sensors} to analyze the vibration responses of structures. We are particularly interested in this last category, and notably in the use of \textit{Lamb waves}, a class of guided waves that is especially widespread in structural inspection \cite{SAWANT2023106931, ZHANG2021107107}. These are guided waves that propagate within structures and that possess several characteristics making them notably suitable for \textit{SHM} applications:
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+ 
+    \item They allow the inspection of the entire thickness of a structure, unlike surface waves.
+ 
+    \item Because these waves are constrained by the structure in which they propagate, they lose not much energy and are therefore able to travel longer distances.
+    
+\end{itemize}
+ 
+Here we focus particularly on the methods used for the first two steps of \textit{Rytter's hierarchy}, that is, the \textit{detection} and \textit{localization} of defects. 
+ 
+Traditionally, \textit{detection} and \textit{localization} algorithms rely on the manual extraction of features from the measured signals \cite{ZHANG2021107107, SAWANT2023106931}. These so-called \textit{expert} approaches complicate the monitoring process since they require in-depth knowledge of a specific system. As a result, deploying these methods at an industrial scale becomes more difficult. Advances in machine learning methods \textit{ML / DL} are revolutionizing the \textit{SHM} field, as they could enable the large-scale automation of monitoring processes. 
+
+Machine learning approaches can first be distinguished by the input they rely on to learn :
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item \textbf{Supervised learning} relies on examples whose expected output is known, called labeled data to train models to perform classification or regression tasks. The classical models are \textit{decision trees (Random Forest)}, polynomial regressions, or \textit{Support Vector Machines (SVM)}. Probabilistic approaches, such as Bayesian methods and Gaussian processes, additionally provide an estimate of the uncertainty associated with each prediction \cite{s25196136}. 
+    
+    \item \textbf{Unsupervised learning} extracts patterns from unlabeled data, meaning that the output of the input examples is unknown. This approach is widely used for anomaly detection in SHM \cite{SAWANT2023106931, SPENCER2025100203, infrastructures11070228} due to the scarcity of labeled data. Typical methods include clustering (e.g.\ k-means), dimensionality reduction (e.g.\ PCA) and autoencoders trained only on healthy data, which flag damage as a deviation from the learned baseline. 
+
+    \item \textbf{Hybrid learning}, most often refers to \textit{Physics-Informed Machine Learning (PIML)}, combines data-driven methods with physics-based models in order to benefit from their respective strengths, in particular to reduce the amount of data required and improve generalization. It is not exclusive of the two previous paradigms: a physics-informed model can itself be trained in a supervised or unsupervised way \cite{s25196136, infrastructures11070228}.
+    
+\end{itemize}
+
+Independently of these learning paradigms, several families of models can be distinguished. Each of them can be trained in a supervised or unsupervised way, and can be combined with physical knowledge in a hybrid approach :
+
+%-------------%
+\begin{itemize}[itemsep=8pt]
+
+    \item \textbf{Artificial neural networks (ANN)} are the original neural architecture, from the single perceptron to the \textit{MultiLayer Perceptron (MLP)}, from which deep learning models derive \cite{s25196136}. They can be trained in a supervised way (classification or regression from labeled data) or in an unsupervised way, as with autoencoders. They can model strongly nonlinear relationships and handle complex datasets, but they have a substantial computational cost and are difficult to interpret (black-box effect).
+    
+    \item \textbf{Deep learning} extends the capabilities of \textit{Artificial Neural Networks (ANN)}, by stacking series of hidden layers. This allows the extraction of features contained in higher-dimensional data, such as images or complex and noisy signals. Like \textit{shallow ANNs}, deep learning models can be supervised or unsupervised. The main architectures are the \textit{deep MLPs}, \textit{Convolutional Neural Networks (CNN)}, \textit{Recurrent Neural Networks (RNN/LSTM)} or \textit{AutoEncoders (AE)} \cite{s25196136, infrastructures11070228}.
+ 
+\end{itemize}
+ 
+The first \textit{AI} applications to the \textit{SHM} field began with integration into methods based on the analysis of the vibration responses of structures, through the deployment of \textit{Artificial Neural Networks (ANN)} and \textit{MultiLayer Perceptrons (MLP)} \cite{SPENCER2025100203}. These, however, encounter certain limitations in handling complex and voluminous datasets.  
+ 
+The limitations of \textit{ANNs} push researchers toward more varied \textit{ML} algorithms. \textit{Support Vector Machines (SVM)} gained popularity in the early 2000s : \textit{Mita and Taniguchi} show that these models are able to outperform \textit{ANNs} in classification \cite{SPENCER2025100203}. \textit{He and Yan} \cite{he2007structural} introduce wavelet \textit{SVMs}, effective on noisy data. \textit{ML} methods also extend to other types of signals, such as those from piezoelectric sensors, as shown by \textit{Park et al.} \cite{park2007builtin}.
+ 
+Finally, the advent of \textit{Convolutional Neural Networks (CNN)} in the mid-2010s enabled the analysis of higher-dimensional signals such as images or videos and revolutionized detection. In parallel, this advance made it possible to introduce methods involving no sensor, enabling non-invasive inspections in previously inaccessible areas and reducing costs. \cite{SPENCER2025100203}
+ 
+%-----------------------------------%
+\subsection{Challenges and Motivations of \textit{ML-SHM} Approaches}
+ 
+\textit{ML} and \textit{DL} methods show strong capabilities for the analysis of complex data, the extraction of patterns and increasingly accurate detection and localization predictions \cite{Khatir2025}. Their ability to handle complex nonlinear problems is among the reasons motivating their use for \textit{SHM} applications, but there are others:
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item \textbf{Accuracy}: Machine learining models, such as \textit{ANN -  Artificial Neural Network} or \textit{DNN - Deep Neural Network}, have the ability to produce more accurate results, notably for defect positioning, than traditional methods. These \textit{data-driven} approaches stand out through their ability to recognize complex patterns in large datasets and generalize this knowledge to various situations.
+    
+    \item \textbf{Nonlinearity}: AI models are favored for \textit{SHM} applications because they allow better handling of nonlinearity. Indeed, they are able to establish nonlinear relationships between the input data and the outputs they generate, which allows them to faithfully describe real phenomena, rarely linear, inherent to \textit{SHM} applications. 
+    
+    \item \textbf{Adaptability}: Deep learning models are particularly adaptable and can learn from several different types of data (images, videos, vibration signals, etc.), which makes their application to a large part of the \textit{SHM} field possible \cite{Khatir2025}.
+    
+\end{itemize}
+ 
+Despite the development of these technologies, which enables a revolution in the automation of a large part of \textit{SHM} methods, these methods face several technological barriers that hinder their industrial deployment \cite{Khatir2025, SPENCER2025100203}.
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item \textbf{Data}: Deep models require large amounts of data for their training phase. However, collecting these data is difficult and costly. Measurements on damaged structures are rare owing to the scarcity of such events, and setting up experimental devices intended to describe damage data is expensive. As a result, databases are strongly imbalanced, with abundant healthy data and only a few damaged samples, which makes the training of models difficult, especially in a supervised setting. Generative models such as \textit{Variational AutoEncoders (VAE)} or \textit{Generative Adversarial Networks (GAN)} have been proposed to synthesize damaged samples and mitigate this imbalance \cite{s25196136}.
+    
+    Moreover, most databases suffer from a lack of representativeness of real-world conditions, notably due to the imbalance we have explained but also to the measurement conditions. Indeed, the measurments are most often carried out in the laboratory or via finite element models, ignoring environmental fluctuations, which does not allow field conditions to be described faithfully and prevents the models from generalizing their results.
+    
+    \item \textbf{Computational costs}: Deep models have significantly high computational costs that require substantial hardware and numerical resources (GPU / TPU), which hinders industrial deployment. Resorting to certain technologies such as \textit{edge computing}, model compression or the use of cloud are research directions that could make it possible to address this issue.
+ 
+    \item \textbf{Model complexity}: Machine learning models, and notably deep networks, have complex architectures that are susceptible to black-box effects, making the results poorly interpretable. The safety standards imposed on the \textit{SHM} field require auditable and therefore interpretable results in order to be deployed, hence the development of explainable AI \cite{Khatir2025, SPENCER2025100203}.  
+ 
+\end{itemize}
+ 
+%-----------------------------------%
+\subsection{Datasets}
+ 
+All existing architectures using \textit{ML} or \textit{DL} approaches depend on the availability and quality of data, which makes data a major issue for the development of machine-learning-based \textit{SHM} methods. The lack of data, particularly of damaged structures, as well as its lack of representativeness of real-world conditions, are essential constraints that must be addressed.
+ 
+Some studies build their own datasets from measurements taken on experimental setups, or numerically using finite element models \cite{MUSTAPHA20071885}. However, these approaches do not allow the transferability of models because they are too specific to the experimental conditions.
+ 
+Other studies rely on publicly available \textit{open-source} datasets. For example, the authors of \cite{SAWANT2023106931} train a \textit{CAE - Convolutional Auto-Encoder} architecture on data from the \textit{Open Guided Waves - OGW} dataset \cite{moll2019ogw}, which is a reference for ML-based \textit{SHM} approaches. There are other public databases for this kind of application:  
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item \textbf{Open Guided-Waves - OGW} is an \textit{open source} platform that provides reference measurements for the non-destructive testing of structures. The use of the databases it offers is widespread in the development of ML-based \textit{SHM} methods. The platform today gathers five reference datasets, each corresponding to a specific application. For example, the dataset described by \textit{Jochen Moll et al} \cite{moll2019temperature} focuses on the influence of temperature on guided waves.
+    In practice, for each dataset the measurements are carried out on a quasi-isotropic carbon-fiber-reinforced polymer (CFRP) plate equipped with piezoelectric transducers. The defects are reversible, meaning that they are simulated by an aluminum disk (10 mm diameter - 3 mm thick) that locally modifies the stiffness of the plate and can therefore be added or removed at any time \cite{moll2019ogw}.
+    
+    \item The dataset named \textbf{Fatigue Crack Growth in Aluminum Lap Joint}, provided by \textit{NASA}, aims to relate, in a controlled way, Lamb-wave signals to the propagation of fatigue cracks in riveted lap joints \cite{peng2015probabilistic}. The experimental setups consist of two aluminum plates joined by three rows of five rivets, and instrumented with piezoelectric wafers \textit{(PZT)} bonded in a \textit{pitch-catch} configuration, meaning that some of the sensors are transmitter \textit{(pitch)} and others are receivers \textit{(catch)} \cite{he2013multifeature}.
+    
+    At several instants identified by the number of cycles, each acquisition is repeated twice to reduce uncertainty. The values of three variables are measured: time \textit{(s)}, the excitation signal \textit{ch1 (V)} and the received signal \textit{ch2 (V)}. 
+    
+    An additional file provides, for each specimen, a description of the evolution of the crack length (measured optically as ground truth) as a function of cycles and of the corresponding loading profile (stress in MPa).
+ 
+    The data are publicly available on the \textit{NASA} website: \cite{nasa_lapjoint_dataset}
+    
+    \item The dataset published by \textit{Yang et al.} \cite{Yang2025} constitutes the first public benchmark dedicated to evaluating guided-wave structural health monitoring \textit{(SHM)} methods \textbf{under uncontrolled and dynamic outdoor conditions}. Existing databases are limited to laboratory acquisitions under stabilized temperature and humidity. This experiment was conducted over more than four and a half years, from March 2018 to October 2022, at the \textit{University of Utah}, on an aluminum plate instrumented with piezoelectric transducers and fully exposed to outdoor conditions (rain, snow, frost, sunlight, etc.). 
+     
+    The experiment setup is described as follow :
+
+    %-------------%
+    \begin{itemize}[itemsep=8pt]
+    
+        \item 8 piezoelectric transducers PZT ($\varnothing$ 7mm x 0.2mm) are attached to an aluminium plate (530 x 530 x 3mm). 
+        
+        \item Only 6 PZT are used in \textit{pitch-catch} configuration. PZT n°5 and 6 are transmitters and PZT n°1, 2, 3 and 4 are receivers. This allow to report 8 guided waves measurments, one for each paths, each time a mesure is performed.
+
+        \item The exitation signal is a linear \textit{chirp} of 5kHz-350khZ during 1ms
+
+        \item The sampling frequency is 1MhZ
+        
+    \end{itemize}
+    
+    Each guided-wave measurement is accompanied by corresponding environmental quantities (temperature, humidity, pressure, light) as well as a weather label \textit{(clear weather, precipitation, etc.)}. From April 2021 and until the end of the experiments, thirteen types of damage of increasing importance -- from an added mass to through-holes -- were progressively introduced over time. The data were stored in 56 \textit{.pickle} files named ``\textit{measurements\_YYYY\_MM}'', containing a dictionary of 10 keys and notably:
+
+    %-------------%
+    \begin{itemize}[itemsep=8pt]
+
+        \item ``\textit{exitation signal}'' : exitation signal generate by the linear \textit{chip} of 1ms
+    
+        \item ``\textit{guided waves}'' : matrix containing the measured guided wavess -- (8x2000) corresponding to a meausre of 2000 samples for each sensor path.
+
+        \item ``\textit{damage tag}'' : value that decribes the damage status from D1 to D13.
+
+    \end{itemize}
+    
+    The public data weighs nearly 100 GB downsampled and 9 TB of raw data, gathering nearly 6.4 million guided-wave measurements \cite{yang2025longterm_data}. 
+    
+    The analysis proposed by \textit{Yang et al.} \cite{Yang2025} highlights that environmental variations, sensor drift and installation offsets can alter the signals more strongly than the damage itself.  
+    
+\end{itemize}
+ 
+%-----------------------------------%
+\section{Existing Architectures}
+ 
+This section aims to describe some ML-based \textit{SHM} architectures proposed by the scientific literature. The selected articles address either the detection aspect or the defect localization part described by \textit{Rytter's hierarchy}. They propose innovative approaches to adress these problems, and we will see what their strengths are and the advances they can bring, but also the limitations they encounter and how it might be possible to address them.   
+ 
+Generally speaking, the detection or localization aspect relies on the computation of a \textit{damage index}. A damage index \textit{(damage index - DI)} quantifies the difference between a measured signal and a reference signal in order to indicate the presence of a defect. These indicators make it possible to assess the state of a structure without requiring the manual interpretation of complex physical phenomena such as the time of flight of a pure wave mode.
+ 
+%--------------------%
+\subsection{Convolutional Autoencoder}
+ 
+\textit{Sawant et al}. \cite{SAWANT2023106931} propose an unsupervised approach for the \textit{detection} and \textit{localization} of defects with temperature compensation. The proposed architecture relies on a \textit{Convolutional AutoEncoder (CAE)} coupled with \textit{transfer learning (TL-CAE)}. Training is carried out on a dataset from the \textit{Open Guided Waves} platform dedicated specifically to temperature compensation \cite{moll2019temperature, moll2019temperature_data}.  
+ 
+The principle is as follows: the \textit{CAE} is trained only on raw time signals, from healthy plates and at different temperatures. During the test phase, the model attempts to reconstruct a transmitter-receiver path, then the reconstruction error, computed by the \textit{Mean Squared Error (MSE)} function, is examined and serves as an anomaly indicator and subsequently for detection. 
+ 
+\textit{Sawant et al}. compute a \textit{DI} with a \textit{signal difference coefficient (SDC)} per path, which is then fed to a spatial ellipse-based triangulation algorithm. 
+ 
+For each transmitter-receiver path, the median of the reconstruction mean squared errors \textit{(MSE)} computed over several pulses on an undamaged structure is calculated, constituting the \textit{baseline} ($MSE_{BL}(i,j)$), which represents the healthy reference model. During the test phase, the median of the reconstruction mean squared errors of the tested signal is computed, over the same number of bursts, and the \textit{SDC} is defined as:
+$$
+SDC(i,j) = median(MSE_M(i,j)) - median(MSE_{BL}(i,j))
+$$
+ 
+where $MSE_M(i,j)$ denotes the reconstruction error, on path $(i,j)$, of the tested signal. These coefficients are then used by a spatial ellipse-based triangulation algorithm, which discretizes the plate into a grid for which the intensity of each pixel is determined by: 
+$$
+DI(x, y) = \sum_{i=1}^{N-1} \sum_{j=i+1}^{N} SDC(i,j) \cdot \frac{\beta - RD(x, y)}{\beta - 1} 
+$$
+ 
+where $N$ is the number of sensors used and $RD(x,y)$ a spatial distribution function with elliptical contours, representing the path between a transmitter-receiver pair that becomes the foci of the described ellipse. The parameter $\beta$, determined empirically, is used to limit the area covered by this ellipse and helps preserve a better spatial resolution.
+ 
+Thus, for each pixel contained in the formed ellipse, the importance of each transmitter-receiver path, determined by the $SDC$ score, is summed, yielding a \textit{heatmap} that makes it possible to localize the defect by observing the position of the energy peak.
+ 
+Finally, the article proposes the use of \textit{Transfer Learning} to significantly reduce the number of trainable parameters of the model. 
+ 
+The method begins with the training of a complete model for a single path (transmitter-receiver $(i,j)$). The encoder parameters are then frozen \textit{(Transfer)} in order to train only the decoder parameters on the other paths. This makes it possible to very substantially reduce the number of trainable parameters, going from $24.3M$ to $1.11M$, without significant loss of accuracy \cite{SAWANT2023106931}. 
+ 
+\textit{Transfer Learning} also allows a simplification of the computations and therefore a reduction in the consumption of computational resources, offering the possibility of integrating the model into embedded systems \textit{(edge-computing)}.
+ 
+The approach proposed by \cite{SAWANT2023106931} is particularly innovative and addresses several technological barriers: 
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item The unsupervised aspect reduces the amount of data required and facilitates their acquisition (only \textit{healthy signals}).
+    
+    \item Detection, which relies on a \textit{Deep Learning} approach, does not require any data preprocessing procedure, which greatly simplifies the process.
+    
+    \item The use of \textit{Transfer Learning} reduces the computational costs associated with training and inference, which makes it possible to consider integration into embedded systems \textit{(edge-computing)}.
+    
+\end{itemize}
+ 
+It is nonetheless noted that the proposed model faces certain limitations:
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+ 
+    \item The damage mechanism used remains very simplistic (a simple added mass). The dataset from \textit{OGW} does not sufficiently reflect real-world conditions.
+    
+    \item The positioning errors remain significant, $\approx 68$ mm on a $500 \times 500$ mm plate, i.e. an error of about $14\%$.
+    
+    \item The elliptical imaging algorithm is relatively complex compared with the method used for detection. Moreover, the choice of the parameter $\beta$ is empirical, which requires more detailed knowledge of the system, limiting transferability.  
+    
+\end{itemize}
+ 
+%--------------------%
+\subsection{Outlier Analysis and Multilayer Perceptron}
+ 
+\textit{F. Mustapha et al.} \cite{MUSTAPHA20071885} propose a method that differs technically from the approach described previously, but whose general idea is essentially the same.
+ 
+The presented model aims at the detection and localization of defects present on isotropic structures, based on \textit{Outlier Analysis (OA)} for the detection aspect and a \textit{Multi-Layer Perceptron (MLP)} for the positioning part.
+
+The authors build an experimental setup to take measurements and compiled a dataset. This dataset is used later to train the model. It is constitued by :  
+
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item Rectangular plate : 305 mm x 215 mm x 2 mm
+    \item Eight PIC155-type PZT patches ($\varnothing$10 mm x 1mm), used alternately as transmitters and receivers, thus forming a network of 28 possible propagation paths, each corresponding to a pair of PZT patches.
+    \item 100 defect locations were simulated using a localized surface mass constraint.
+    
+\end{itemize}
+
+The framework is then divided into two steps :
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item \textbf{Detection} is carried out by an \textit{outlier analysis} that computes a discordancy index from the \textit{Mahalanobis} distance for each transmitter-receiver sensor pair. A \textit{vector of novelty indices} is then formed:
+    $$
+    D_{\zeta} = (\{x_{\zeta}\} - \{\overline{x}\})^T [S]^{-1} (\{x_{\zeta}\} - \{\overline{x}\})
+    $$
+    with: 
+ 
+    %-------------%
+    \begin{description}[itemsep=8pt]
+    
+        \item[$D_\zeta$:] is the \textit{Mahalanobis} distance.
+        
+        \item[$\{x_\zeta\}$:] The observation evaluated as a potential outlier.
+        
+        \item[$\{\overline{x}\}$:] The mean vector of the observations of the normal sample, which describes the undamaged structure.
+        
+        \item[{$[S]$}:] is the covariance matrix of the normal sample.
+        
+    \end{description}
+ 
+    \item \textbf{Localization} is performed using an \textit{MLP} that takes as input the vector of novelty indices computed in the previous step, to predict as output the position $(x, y)$ of the defect.
+    
+\end{itemize}
+ 
+The presented method shows convincing results both in terms of detection and of the accuracy of defect localization. The use of a multilayer perceptron is innovative and convincing; the model obtains a \textit{dimensionless MSE} of about $2\%$ for defect positioning.
+ 
+However, the approach faces certain limitations:
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item \textit{Outlier Analysis} is a complex and manual feature-extraction method that one seeks to limit in order to facilitate the deployment and transferability of these technologies.
+
+    \item The article of \textit{F. Mustapha et al.} \cite{MUSTAPHA20071885} a little outdated (2007), particularly \textit{MLPs} are relatively old architectures that we want to modernize.
+    
+    \item The defects are similar, reversible and simulated by a simple added mass. This does not allow a faithful representation of real-world conditions.
+    
+\end{itemize}
+ 
+%--------------------%
+\subsection{Time-Varying Damage Index}
+ 
+\textit{Zhang et al.} \cite{ZHANG2021107107} propose a defect-positioning method based on the computation of a damage index, in the same way as \cite{MUSTAPHA20071885}, but time-dependent \textit{(Time Varying Damage Index - TVDI)}. The thesis argued by the authors is that the temporal information contained in the signal is intrinsically linked to the position of the defect and must therefore be preserved.
+
+ The fisrt step is the data aquisition, an expiremental setup is build to compile a dataset used to train the model. This setup is constructed with : 
+
+ %-------------%
+\begin{itemize}[itemsep=8pt]
+    
+    \item Two aluminum plates : 600 x 600 x 1.5 mm
+    \item Four PZT patches ($\varnothing$10 mm x 2mm), forming 12 actuator-receiver paths
+
+\end{itemize}
+
+The \textit{TVDI} is computed as follows. Let a discrete signal $s_n = s(n\,\Delta t)$ where $\Delta t$ is the sampling interval; the discrete Fourier transform \textit{(DFT)} of this signal is:  
+$$
+S_k = S(f_k) = \sum_{n=0}^{N-1} s_n \cdot e^{-\frac{2i\pi}{N} \cdot nk}
+$$
+for $k \in \llbracket 0, N-1 \rrbracket$ and with $f_k = \frac{k}{(N\,\Delta t)}$. Let the reference signal $r_n$ on a healthy structure, the damage index is then defined as:
+$$
+\eta = \frac{\sum_{f_k \in \phi} S_k^{2}}{\sum_{f_k \in \phi} R_k^{2}}
+$$
+In order to make it time-varying, a short-time Fourier transform \textit{(STFT)} is applied, with a \textit{Hanning window} of width $T$ and a step equal to $\frac{T}{2}$:
+$$
+S_{k,m} = \sum_{n=0}^{N-1} s_n w_{n-m}\cdot e^{-\frac{2i\pi}{N} \cdot nk}
+$$
+for $m \in \llbracket 0, M-1 \rrbracket$ with $M = \frac{2 \cdot (N-1) \Delta t}{T}$. Finally, the time-varying damage index is defined as: 
+$$
+\eta_m = \frac{\sum_{f_k \in \phi} S_{k,m}^{2}}{\sum_{f_k \in \phi} R_{k,m}^{2}}
+$$
+
+$S_{k,m}$ and $R_{k,m}$ represent the energy of the wave at frequency $f_k$; thus $\eta_m$ is in fact the ratio between the energy of the tested wave and that of the reference wave. 
+ 
+\vspace{10pt}
+ 
+Defect positioning is then carried out by a 1D Convolutional Neural Network \textit{(1D-CNN)}, which takes as input the time-varying damage indices $\eta_m $ and predicts as output the coordinates $(x,y)$ of the defect. The retained architecture is described in \cite{ZHANG2021107107} as follow : 
+ 
+%-------------%
+\begin{enumerate}[itemsep=8pt]
+    
+    \item Two convolution blocks : composed of two successive convolution layers made up of 16 and 64 filters respectively, activated by the \textit{ReLU} function and followed by a \textit{Max Pooling} layer.
+    
+    \item One output block consisting of two dense \textit{(fully-connected)} layers made up of 256 and 2 nodes respectively. The second dense layer is activated by the \textit{sigmoid} function, making it possible to obtain coordinates normalized between $(0,1)$.
+    
+    \item Regularization: \textit{dropout} after each convolutional layer and the first dense layer.
+ 
+    \item Use of the Adam \textit{optimizer}.
+    
+\end{enumerate}
+ 
+The study shows that this model present multiple strengths :
+
+%-------------%
+\begin{itemize}[itemsep=8pt]
+
+    \item A \textit{1D Convolutional Neural Network (1D-CNN)} associated with a time-varying damage index \textit{(TVDI)} is capable of effectively localizing defects.
+
+    \item The proposed model demonstrates a strong generalization capability : trained on one plate, it manages to predict the location of damage on the same plate at different locations, as well as on a new plate, with relatively low mean normalized distance \textit{(MND)} errors. It shows that it can be applied to new structures relatively similar to those used for training, a major asset for real-world industrial applications
+    
+    \item The study obtains better results than several existing approaches, such as the probability ellipse or the \textit{delay and sum (DAS)} algorithm.
+    
+\end{itemize}
+ 
+However, the model also has certain limitations. First, it depends entirely on a reference measurement \textit{(baseline)} of a healthy structure to be compared with the altered signals. Moreover, the damages are simulated by simply adding a mass, which does not sufficiently reflect the reality of field conditions and does not allow validation for industrial deployment.
+ 
+%-----------------------------------%
+\subsection{Discussion}
+ 
+We have seen that the proposed models have their respective strengths and limitations. However, we note that these approaches can benefit from the strengths of each other to combine their limitations :
+ 
+%-------------%
+\begin{enumerate}[itemsep=8pt]
+ 
+    \item The method proposed by \textit{Sawant et al}. \cite{SAWANT2023106931} is innovative and obtains convincing results for the detection aspect. In addition, the computation of the damage index is done through the autoencoder, which limits the use of \textit{manual} methods. However, the model relies on a purely geometric approach for the defect localization aspect and obtains poorly convincing results ($\sim14\%$ error).  
+ 
+    \item The approach proposed by \textit{F. Mustapha et al.} \cite{MUSTAPHA20071885} concludes with satisfactory results for positioning. However, the \textit{outlier analysis} used for the detection part is a complex approach, which rely on manual-extracted feature.
+ 
+    \item The approach proposed by \textit{Zhang et al.} \cite{ZHANG2021107107} focuses on the localization aspect and obtains convincing results. The computation of the damage index nonetheless relies on a manual extraction method (Fourier transform, etc.), which complicates the process aswell. 
+ 
+\end{enumerate} 
+ 
+Finally, all the methods suffer from a problem of representing real-world conditions, notably due to the datasets used or the damage methods implemented. To address this difficulty, it is necessary to be able to train the models on datasets that are more representative of field reality. 
+ 
+%------------------%
+\subsubsection{Proposed Approach}
+ 
+The analysis we have just carried out leads us to consider a model that combines the strong points of each of these methods in order to address their respective limitations. This model aims to be an end-to-end data driven framework from detection to localisation. We therefore propose to imagine an architecture organized as follows : 
+
+ %----------------------------%
+\begin{figure}[htbp]
+    \centering
+    
+    \begin{tikzpicture}[
+        >=stealth, 
+        block/.style={
+            rectangle, 
+            draw, 
+            rounded corners=3mm, 
+            minimum width=3cm, 
+            minimum height=2.2cm, 
+            align=center,
+            font=\small
+        },
+        point/.style={
+            circle, 
+            draw, 
+            minimum size=6mm, 
+            inner sep=0pt
+        },
+        dashed_box/.style={
+            draw, 
+            dashed, 
+            inner sep=5mm
+        }
+    ]
+
+    %------------ step node --------------#
+    \node[point] (start) {};
+    \node[block, right=1.2cm of start] (ae) {\textbf{AE / CAE}};
+    \node[point, right=1.2cm of ae] (decision) {};
+    \node[block, right=1.5cm of decision] (mlp) {\textbf{MLP / 1D-CNN}};
+    \node[point, right=1.2cm of mlp] (end) {};
+
+    %---------- connexion arrow ----------#
+    \draw[->] (start) -- (ae);
+    \draw[->] (ae) -- (decision);
+    \draw[->] (decision) -- (mlp);
+    \draw[->] (mlp) -- (end);
+
+    \draw[->] (decision.south) -- ++(0,-2.1cm) -| node[pos=0.25, below, font=\footnotesize] {No Damage} (end.south);
+
+    %------------ global boxes -----------#
+    \node[dashed_box, fit=(ae), label={[font=\bfseries]above:Detection}] {};
+    \node[dashed_box, fit=(mlp), label={[font=\bfseries]above:Localization}] {};
+
+    \end{tikzpicture}
+    \caption{Framework for detection \& localization process}
+    
+\end{figure}
+
+%-------------%
+\begin{enumerate}[itemsep=8pt]
+    
+    \item \textit{Autoencoder -- AE} or a \textit{Convolutional Autoencoder -- CAE} for the anomaly detection part, as proposed by \textit{Sawant et al}. \cite{SAWANT2023106931}. 
+ 
+    \item Perform a regression for the localization aspect with a \textit{MultiLayer Perceptron - MLP} or a \textit{1D-CNN} taking as input a damage index, as proposed by \textit{F. Mustapha et al.} \cite{MUSTAPHA20071885} or \textit{Zhang et al.} \cite{ZHANG2021107107}.
+    
+\end{enumerate}
+
+%-----------------------------------------------------%
+\newpage
+\nocite{*}
+\printbibliography[title={Bibliographic References}]
+ 
+%-----------------------------------------------------%
+% \newpage
+% \listoffigures
+ 
+%-----------------------------------------------------%
+\newpage
+\thispagestyle{empty}
+ 
+\appendix
+\refstepcounter{section}
+ 
+%-------------------------------------------------------------------------%
+%------------------------------- BACK PAGE -------------------------------%
+%-------------------------------------------------------------------------%
+% \newpage
+% \thispagestyle{empty}
+% \pagecolor{supmeca_blue}
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.90\textwidth]{\logosfolder logo_isae-supmeca_blanc-orange.png}\\[1cm]
+%     \includegraphics[width=0.75\textwidth]{\logosfolder cedex_supmeca.png}\\[1cm]
+%     \includegraphics[width=0.5\textwidth]{\logosfolder logo_groupe_ISAE_inverse.png}  
+% \end{figure}
+    
+\end{document}
+ 
