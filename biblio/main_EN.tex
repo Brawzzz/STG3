@@ -281,65 +281,193 @@ Despite the development of these technologies, which enables a revolution in the
     \item \textbf{Model complexity}: Machine learning models, and notably deep networks, have complex architectures that are susceptible to black-box effects, making the results poorly interpretable. The safety standards imposed on the \textit{SHM} field require auditable and therefore interpretable results in order to be deployed, hence the development of explainable AI \cite{Khatir2025, SPENCER2025100203}.  
  
 \end{itemize}
- 
+
 %-----------------------------------%
-\subsection{Datasets}
+\section{Data for ML-based SHM}
  
-All existing architectures using \textit{ML} or \textit{DL} approaches depend on the availability and quality of data, which makes data a major issue for the development of machine-learning-based \textit{SHM} methods. The lack of data, particularly of damaged structures, as well as its lack of representativeness of real-world conditions, are essential constraints that must be addressed.
+\textit{ML} or \textit{DL} approaches depend on the availability and quality of data, which makes those a major issue for the development of \textit{ML}-based \textit{SHM} methods. This section aims to present the different public databases available for guided-wave \textit{SHM}, and the challenges related to the quality and tha avibility of these data.
  
-Some studies build their own datasets from measurements taken on experimental setups, or numerically using finite element models \cite{MUSTAPHA20071885}. However, these approaches do not allow the transferability of models because they are too specific to the experimental conditions.
+%------------------%
+\subsection{Challenges regarding data for SHM methods}
  
-Other studies rely on publicly available \textit{open-source} datasets. For example, the authors of \cite{SAWANT2023106931} train a \textit{CAE - Convolutional Auto-Encoder} architecture on data from the \textit{Open Guided Waves - OGW} dataset \cite{moll2019ogw}, which is a reference for ML-based \textit{SHM} approaches. There are other public databases for this kind of application:  
+The needs in data comes with several challenges when developping \textit{ML} or \textit{DL} models \cite{Khatir2025, SPENCER2025100203, s25196136} :
  
 %-------------%
 \begin{itemize}[itemsep=8pt]
-    
-    \item \textbf{Open Guided-Waves - OGW} is an \textit{open source} platform that provides reference measurements for the non-destructive testing of structures. The use of the databases it offers is widespread in the development of ML-based \textit{SHM} methods. The platform today gathers five reference datasets, each corresponding to a specific application. For example, the dataset described by \textit{Jochen Moll et al} \cite{moll2019temperature} focuses on the influence of temperature on guided waves.
-    In practice, for each dataset the measurements are carried out on a quasi-isotropic carbon-fiber-reinforced polymer (CFRP) plate equipped with piezoelectric transducers. The defects are reversible, meaning that they are simulated by an aluminum disk (10 mm diameter - 3 mm thick) that locally modifies the stiffness of the plate and can therefore be added or removed at any time \cite{moll2019ogw}.
-    
-    \item The dataset named \textbf{Fatigue Crack Growth in Aluminum Lap Joint}, provided by \textit{NASA}, aims to relate, in a controlled way, Lamb-wave signals to the propagation of fatigue cracks in riveted lap joints \cite{peng2015probabilistic}. The experimental setups consist of two aluminum plates joined by three rows of five rivets, and instrumented with piezoelectric wafers \textit{(PZT)} bonded in a \textit{pitch-catch} configuration, meaning that some of the sensors are transmitter \textit{(pitch)} and others are receivers \textit{(catch)} \cite{he2013multifeature}.
-    
-    At several instants identified by the number of cycles, each acquisition is repeated twice to reduce uncertainty. The values of three variables are measured: time \textit{(s)}, the excitation signal \textit{ch1 (V)} and the received signal \textit{ch2 (V)}. 
-    
-    An additional file provides, for each specimen, a description of the evolution of the crack length (measured optically as ground truth) as a function of cycles and of the corresponding loading profile (stress in MPa).
  
-    The data are publicly available on the \textit{NASA} website: \cite{nasa_lapjoint_dataset}
-    
-    \item The dataset published by \textit{Yang et al.} \cite{Yang2025} constitutes the first public benchmark dedicated to evaluating guided-wave structural health monitoring \textit{(SHM)} methods \textbf{under uncontrolled and dynamic outdoor conditions}. Existing databases are limited to laboratory acquisitions under stabilized temperature and humidity. This experiment was conducted over more than four and a half years, from March 2018 to October 2022, at the \textit{University of Utah}, on an aluminum plate instrumented with piezoelectric transducers and fully exposed to outdoor conditions (rain, snow, frost, sunlight, etc.). 
-     
-    The experiment setup is described as follow :
-
-    %-------------%
-    \begin{itemize}[itemsep=8pt]
-    
-        \item 8 piezoelectric transducers PZT ($\varnothing$ 7mm x 0.2mm) are attached to an aluminium plate (530 x 530 x 3mm). 
-        
-        \item Only 6 PZT are used in \textit{pitch-catch} configuration. PZT n°5 and 6 are transmitters and PZT n°1, 2, 3 and 4 are receivers. This allow to report 8 guided waves measurments, one for each paths, each time a mesure is performed.
-
-        \item The exitation signal is a linear \textit{chirp} of 5kHz-350khZ during 1ms
-
-        \item The sampling frequency is 1MhZ
-        
-    \end{itemize}
-    
-    Each guided-wave measurement is accompanied by corresponding environmental quantities (temperature, humidity, pressure, light) as well as a weather label \textit{(clear weather, precipitation, etc.)}. From April 2021 and until the end of the experiments, thirteen types of damage of increasing importance -- from an added mass to through-holes -- were progressively introduced over time. The data were stored in 56 \textit{.pickle} files named ``\textit{measurements\_YYYY\_MM}'', containing a dictionary of 10 keys and notably:
-
-    %-------------%
-    \begin{itemize}[itemsep=8pt]
-
-        \item ``\textit{exitation signal}'' : exitation signal generate by the linear \textit{chip} of 1ms
-    
-        \item ``\textit{guided waves}'' : matrix containing the measured guided wavess -- (8x2000) corresponding to a meausre of 2000 samples for each sensor path.
-
-        \item ``\textit{damage tag}'' : value that decribes the damage status from D1 to D13.
-
-    \end{itemize}
-    
-    The public data weighs nearly 100 GB downsampled and 9 TB of raw data, gathering nearly 6.4 million guided-wave measurements \cite{yang2025longterm_data}. 
-    
-    The analysis proposed by \textit{Yang et al.} \cite{Yang2025} highlights that environmental variations, sensor drift and installation offsets can alter the signals more strongly than the damage itself.  
-    
+    \item \textbf{Quantity} : deep models need a large number of examples to learn and to generalize. However, guided-wave measurements are expensive : each acquisition requires an instrumented structure, a dedicated acquisition chain and, introduction of a defects for damage states that makes the process even more expensive.
+ 
+    \item \textbf{Scarcity} : real structures are rarely damaged on purpose, and in-service damage remains a rare event. Therefore damaged data are scarce and datasets are strongly imbalanced, with abundant healthy measurements and only a few damaged ones. This explains the popularity of unsupervised approaches, which only require healthy data for training \cite{SAWANT2023106931}.
+ 
+    \item \textbf{Representativeness} : environmental and operational conditions (temperature, humidity, loading, sensor ageing, etc.) can modify guided-wave signals, sometimes more strongly than damages \cite{moll2019temperature, Yang2025}. A model trained under stabilized laboratory conditions may thus confuse an environmental variation with damage once deployed in the field.
+ 
 \end{itemize}
+ 
+%------------------%
+\subsection{Data origins}
+ 
+The data used in the literature generally come from three types of sources, each with its own advantages and limitations :
+ 
+%-------------%
+\begin{enumerate}[itemsep=8pt]
+ 
+    \item \textbf{Laboratory experiments}: many studies build their own datasets from measurements taken on dedicated experimental setups, as \textit{F. Mustapha et al.} \cite{MUSTAPHA20071885} or \textit{Zhang et al.} \cite{ZHANG2021107107}. The conditions are controlled, but the setups are specific to each study (geometry, material, sensor layout, excitation), which limits the transferability of the trained models and the comparison of results between studies.
+ 
+    \item \textbf{Numerical simulation}: data can be obtained by a \textit{finite element} models that can generate an almost unlimited amount of data, including damages states. However, simulated signals often failed for representativeness of reality : measurement noise, sensor bonding variability and environmental fluctuations are rarely modelled faithfully.
+ 
+    \item \textbf{Public benchmarks}: shared \textit{open-source} datasets provide a common ground on which different methods can be trained and compared. For example, the authors of \cite{SAWANT2023106931} train a \textit{CAE - Convolutional Auto-Encoder} architecture on data from the \textit{Open Guided Waves - OGW} platform \cite{moll2019ogw}, which has become a reference for ML-based \textit{SHM} approaches.
+ 
+\end{enumerate}
+ 
+The rest of this section focuses on the third category and presents six public guided-wave datasets coming from three sources : the \textit{Open Guided Waves} platform that regroups four datasets, the \textit{University of Utah} and the \textit{NASA Prognostics Center of Excellence (PCoE)}. Table \ref{tab:datasets} summarizes the main characteristics of the six guided-wave datasets presented in this section.
+ 
+%------------------%
+\subsubsection{Open Guided Waves}
+ 
+\textit{Open Guided Waves - OGW} is an \textit{open source} platform that provides reference measurements for non-destructive inspection methods of structures \cite{moll2019ogw}. To date, the platform provides four databases that are widely used in the development of ML-based \textit{SHM} methods. Each dataset of the platform corresponds to a specific application and focuses on quasi-isotropic \textit{Carbon Fiber Reinforced Polymer - CFRP} plates equipped with piezoelectric transducers (\textit{PZT}). \\
+ 
+\textbf{OGW \#1 -- Baseline dataset : } The objective of this first dataset is to provide a public reference guided-wave dataset, acquired on a fully known material, this way detection and localization methods can be compared on the same data \cite{moll2019ogw}. The experimental setup is the following:
+ 
+%-------------%
+\begin{itemize}[itemsep=4pt]
+
+    \item \textit{CFRP} plate of $500 \times 500 \times 2$ mm
+    
+    \item 12 \textit{PZT} transducers placed along two opposite edges of the plate (two rows of 6), which gives 66 transmitter-receiver paths.
+    
+    \item reversible damage simulated by an aluminum disk ($\varnothing$ 10 mm) bonded at 28 different positions, which locally modifies the stiffness of the plate and can be added or removed at any time.
+    
+    \item constant temperature of 23\,\celsius{} maintained in a climate chamber.
+
+\end{itemize}
+
+\textbf{OGW \#2 -- Temperature effects : } Temperature variation changes the propagation velocity and the amplitude of guided waves, and its effect on the signals can be stronger than that of a defect. This dataset, described by \textit{Jochen Moll et al.} \cite{moll2019temperature, moll2019temperature_data}, aims to analyse this effect in order to develop and compare \textit{temperature compensation} models. The same plate, sensor layout and reversible damages as in \textit{OGW \#1} are used, but the measurements are carried out over a temperature range of 20 to 60\,\celsius{} with a step of 0.5\,\celsius. This is the dataset used by \textit{Sawant et al.} \cite{SAWANT2023106931} to train their temperature-compensated \textit{TL-CAE}.
+
+\textbf{OGW \#3 -- Complex composite structures : } This dataset provides measurements on structures closer to real aerospace components, by adding an \textit{omega stringer} to the plate \cite{moll2020stringer}. It makes it possible to study the influence of the stringer on guided-wave propagation as well as the detectability of damages of different sizes. The setup is composed of:
+
+%-------------%
+\begin{itemize}[itemsep=4pt]
+
+    \item two \textit{CFRP} plates of $550 \times 550 \times 2$ mm (quasi-isotropic layup) with a bonded \textit{omega stringer}
+   
+    \item an \textit{SHM plate} equipped with 12 \textit{PZT}: 6 actuators and 6 receivers placed on both sides of the stringer, giving 36 \textit{pitch-catch} paths crossing the stringer
+    
+    \item a \textit{Wave field plate} excited by a single \textit{PZT} actuator, on which the wavefield is measured by a 3D laser vibrometer
+    
+    \item reversible damages simulated by steel ellipses of 13 different sizes, fixed with tacky tape at 3 different positions (D1, D2, D3)
+    
+    \item constant temperature of 23\,\celsius{} maintained in a climate chamber.
+
+\end{itemize}
+
+\textbf{OGW \#4 -- Debonding on impact : } Unlike the previous datasets, this one contains \textbf{real damage}. It provides full ultrasonic guided wavefields of a \textit{CFRP} plate with an \textbf{omega stringer}, first fully bonded and then partially debonded by impacts \cite{kudela2022omega}. The setup is the following:
+
+%-------------%
+\begin{itemize}[itemsep=4pt]
+
+    \item \textit{CFRP} plate of $550 \times 550 \times 2$ mm with a bonded \textit{omega stringer} and quasi-isotropic layup (wave field plate of \textit{OGW \#3});
+    
+    \item a single \textit{PZT} actuator ($\varnothing$ 10 mm) bonded on the stringer side, the wavefield being measured on the flat side by a 3D scanning laser vibrometer;
+    
+    \item three damage states: healthy, after a first impact of 15.3 J, and after a second impact of 19 J, both causing a local debonding of the stringer foot.
+
+\end{itemize}
+
+Since this dataset contains wavefields rather than sparse sensor-network signals, it is mainly suited to damage imaging methods, and less directly to models based on transmitter-receiver paths.
+ 
+%------------------%
+\subsubsection{University of Utah Dataset}
+ 
+The dataset published by \textit{Yang et al.} \cite{Yang2025} constitutes the first public benchmark dedicated to evaluating guided-wave structural health monitoring \textit{(SHM)} methods \textbf{under uncontrolled and dynamic outdoor conditions}. Existing databases, including those of the \textit{OGW} platform, are limited to laboratory acquisitions under stabilized temperature and humidity. This experiment was conducted over more than four and a half years, from March 2018 to October 2022, at the \textit{University of Utah}, on an aluminum plate instrumented with piezoelectric transducers and fully exposed to outdoor conditions (rain, snow, frost, sunlight, temperature variations, sensor shift, etc.).
+ 
+The experimental setup is described as follows:
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+ 
+    \item 8 piezoelectric transducers \textit{PZT} ($\varnothing$ 7 mm $\times$ 0.2 mm) are bonded to an aluminum plate ($530 \times 530 \times 3$ mm).
+ 
+    \item Only 6 \textit{PZT} are used, in a \textit{pitch-catch} configuration: \textit{PZT} n°5 and 6 are transmitters and \textit{PZT} n°1, 2, 3 and 4 are receivers. Each acquisition therefore provides 8 guided-wave measurements, one for each transmitter-receiver path.
+ 
+    \item The excitation signal is a linear \textit{chirp} from 5 kHz to 350 kHz lasting 1 ms.
+ 
+    \item The sampling frequency is 1 MHz.
+ 
+\end{itemize}
+ 
+Each guided-wave measurement is accompanied by the corresponding environmental quantities (temperature, humidity, pressure, light) as well as a weather label \textit{(clear weather, precipitation, etc.)}. From April 2021 until the end of the experiment, thirteen damage states of increasing severity were progressively introduced: the first ones are reversible (added masses, labelled \textit{udam}), while the last ones (D8 to D13) are irreversible \textbf{through-holes} drilled in the plate. The data are stored in 56 \textit{.pickle} files named ``\textit{measurements\_YYYY\_MM}'', each containing a dictionary of 10 keys, notably :
+ 
+%-------------%
+\begin{itemize}[itemsep=8pt]
+ 
+    \item ``\textit{excitation signal}'': the excitation signal generated by the 1 ms linear \textit{chirp}
+ 
+    \item ``\textit{guided waves}'': matrix containing the measured guided waves -- ($8 \times 2000$), corresponding to 2000 samples for each actuator-receiver path
+ 
+    \item ``\textit{damage tag}'': value that describes the damage state, from D1 to D13.
+ 
+\end{itemize}
+ 
+The public data weigh nearly 100 GB once downsampled (9 TB of raw data), gathering nearly 6.4 million guided-wave measurements \cite{yang2025longterm_data}. The analysis proposed by \textit{Yang et al.} \cite{Yang2025} highlights that environmental variations, sensor drift and installation offsets can alter the signals more strongly than the damage itself, which makes this dataset particularly relevant for evaluating the robustness of detection models.
+ 
+%------------------%
+\subsubsection{NASA Prognostics Center of Excellence}
+ 
+The \textit{NASA Prognostics Center of Excellence (PCoE)} provides a data repository dedicated to prognostics, i.e.\ to the last level of \textit{Rytter's hierarchy}. Two of its datasets contain guided-wave measurements.
+ 
+ 
+\textbf{CFRP Composites -- fatigue damage growth (run-to-failure).} This dataset, described by \textit{Saxena et al.} \cite{saxena2011composites, nasa_cfrp_dataset}, gathers guided-wave measurements on \textit{CFRP} coupons subjected to tension-tension fatigue until failure. Its objective is to track the growth of matrix micro-cracks and delamination with an X-ray ground truth (periodic radiographs), in order to develop prognostic models estimating the \textit{Remaining Useful Life (RUL)}. The setup consists of:
+ 
+    %-------------%
+    \begin{itemize}[itemsep=4pt]
+    
+        \item Torayca T700G \textit{CFRP} dogbone coupons of $15.24 \times 25.4$ cm, with different layups;
+        
+        \item an artificial notch of $5.08 \times 19.3$ mm machined in the coupon to initiate the damage;
+        
+        \item 12 \textit{PZT} sensors -- 6 transmitters and 6 receivers -- giving 36 \textit{pitch-catch} paths, complemented by triaxial strain gauges.
+        
+    \end{itemize}
+ 
+Unlike the \textit{OGW} datasets, the damage is real and evolves continuously with the number of loading cycles, which makes this dataset suited to damage assessment and prognosis rather than to localization.
+ 
+%-------------%
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.3}
+    
+    \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}m{2.3cm} C C C C}
+    
+        \toprule
+        \textbf{Dataset} & \textbf{Structure} & \textbf{Measures} & \textbf{Defects} \\
+        
+        \midrule
+        OGW \#1 \newline Reference & CFRP plate \newline $500 \times 500 \times 2$ mm & 66 pitch-catch paths & Aluminum disk ($\varnothing$ 10 mm) at 28 positions \\
+
+        \addlinespace
+        OGW \#2 \newline Temperature & CFRP plate \newline $500 \times 500 \times 2$ mm & id.\ OGW \#1, temperature 20--60\,\celsius & id.\ OGW \#1 \\
+
+        \addlinespace
+        OGW \#3 \newline Stringer & CFRP plate + omega stringer & 36 pitch-catch paths + 3D laser vibrometer & 13 damage sizes -- steel ellipses at 3 positions \\
+
+        \addlinespace
+        OGW \#4 \newline Debonding & CFRP plate + omega stringer & 3D laser vibrometer (wavefield) & Stringer debonding \newline Real impacts \\
+
+        \addlinespace
+        Utah & Aluminum plate \newline $530 \times 530 \times 3$ mm & 8 pitch-catch paths, outdoor conditions & 13 progressive damage states -- reversible to through-hole \\
+
+        \addlinespace
+        NASA PCoE \newline CFRP & CFRP dogbone coupons & 36 pitch-catch paths + triaxial strain gauges & Notch $5.08 \times 19.3$ mm + fatigue damage growth \\
+        \bottomrule
+        
+    \end{tabularx}
+    
+    \caption{Comparison of the public guided-wave datasets}
+    \label{tab:datasets}
+\end{table}
+ 
+These datasets are complementary. The \textit{Open Guideed Waves} datasets offer well-controlled and reproducible conditions, with several damage positions, which makes them suitable for comparing detection and localization models, but their damages are mostly reversible and simulated by added masses. The \textit{Utah} dataset introduces the uncontrolled environmental conditions that are missing from laboratory benchmarks, as well as real irreversible damage. Finally, the \textit{NASA PCoE} datasets document the progressive growth of real fatigue damage and are mainly oriented towards prognosis. Evaluating detection and localization models on several of these datasets is therefore a way to assess their robustness and their ability to generalize beyond a single experimental setup.
  
 %-----------------------------------%
 \section{Existing Architectures}
